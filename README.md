@@ -7,6 +7,7 @@
    //username-of-box.your-storagebox.de/username-of-box /mnt/storagebox cifs iocharset=utf8,rw,credentials=/etc/smbcredentials/username-of-box,vers=3.0,noauto,x-systemd.automount,x-systemd.idle-timeout=30,_netdev,uid=0,gid=0,file_mode=0660,dir_mode=0770 0 0
    ```  
    _Note:_ Replace `username-of-box` with your actual username. 
+   
    _Note #2:_ Enter your login and password of storage box at /etc/smbcredentials/username-of-box
 3. **Save the File and Reload the Systemd Daemon:**  
    Execute the following command:  
