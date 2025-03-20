@@ -94,3 +94,6 @@ password=1234512345
 - External reachability should be not enabled, Hetzner Storage box can work without it at local network at highest speed possible, if you plan to mount CIFS at not hetzner server you should enable it. 
 - Create new user for backup at linux with restricted access, its additional layer of security, uid=0 and gid=0: (change it to id of user)
 - You can't use SSH keys at CIFS Debian 12, so make sure file with credentials is secured.
+
+# Credits
+Hetzner offical documentation: https://docs.hetzner.com/storage/storage-box/access/access-samba-cifs/
