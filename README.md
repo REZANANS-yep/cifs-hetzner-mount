@@ -1,4 +1,7 @@
-# Debian
+# Tutorial goal
+Many users encounter an issue where the network environment displays the error "The Host Is Down." In this tutorial, we use the auto-reconnect option when making a request, which helps avoid this issue.
+
+# Debian 12 guide
 **Mounting the Hetzner Storage Box as a CIFS (Samba) Network Share in Debian:**
 1. **Open the `/etc/fstab` File:**  
    Use your preferred text editor (for example, `nano` or `vim`).
@@ -6,7 +9,7 @@
    ```bash
    //username-of-box.your-storagebox.de/username-of-box /mnt/storagebox cifs iocharset=utf8,rw,credentials=/etc/smbcredentials/username-of-box,vers=3.0,noauto,x-systemd.automount,x-systemd.idle-timeout=30,_netdev,uid=0,gid=0,file_mode=0660,dir_mode=0770 0 0
    ```  
-   _Note:_ Replace `username-of-box` with your actual username. 
+   _Note #1:_ Replace `username-of-box` with your actual username. 
    
    _Note #2:_ Enter your login and password of storage box at /etc/smbcredentials/username-of-box
 3. **Save the File and Reload the Systemd Daemon:**  
@@ -14,7 +17,7 @@
    ```bash
    sudo systemctl daemon-reload
    ```
-4. **Access Your Storage Box:**  
+4. **Check your mounted box:**  
    You can now use the `/mnt/storagebox` directory to work with your storage.
 
 Below is a detailed technical breakdown of the fstab entry:
@@ -23,7 +26,13 @@ Below is a detailed technical breakdown of the fstab entry:
  //username-of-box.your-storagebox.de/username-of-box /mnt/storagebox cifs iocharset=utf8,rw,credentials=/etc/smbcredentials/username-of-box,vers=3.0,noauto,x-systemd.automount,x-systemd.idle-timeout=30,_netdev,uid=0,gid=0,file_mode=0660,dir_mode=0770 0 0
 ```
 
-### Breakdown
+2.1 Example of credentials file at `/etc/smbcredentials/u111111`
+```bash
+username=u111111
+password=1234512345
+```
+
+# Technical insight
 - **Remote Share:**  
   `//username-of-box.your-storagebox.de/username-of-box`  
   - This is the network path to the CIFS (Samba) share provided by Hetzner.  
@@ -74,7 +83,14 @@ Below is a detailed technical breakdown of the fstab entry:
     Sets the permission bits for directories, allowing read, write, and execute permissions for the owner and group.
 
 - **Dump and Filesystem Check Options:**  
-  `0 0`  
+  `0 0` arguments  
   - The first `0` disables the dump utility (used for backups).  
   - The second `0` indicates that the filesystem should not be checked at boot time by `fsck`.
 
+# Performance of CIFS
+- At now CIFS is most fast solution for your backups, because its not have any encryption by default.
+
+# Security TIPs (Hetzner only)
+- External reachability should be not enabled, Hetzner Storage box can work without it at local network at highest speed possible, if you plan to mount CIFS at not hetzner server you should enable it. 
+- Create new user for backup at linux with restricted access, its additional layer of security, uid=0 and gid=0: (change it to id of user)
+- You can't use SSH keys at CIFS Debian 12, so make sure file with credentials is secured.
